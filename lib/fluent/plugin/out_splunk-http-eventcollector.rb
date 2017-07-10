@@ -72,6 +72,7 @@ class SplunkHTTPEventcollectorOutput < BufferedOutput
     log.trace "splunk-http-eventcollector(initialize) called"
     require 'net/http/persistent'
     require 'openssl'
+    require 'addressable/uri'
   end  # initialize
 
   # Thanks to
@@ -108,7 +109,7 @@ class SplunkHTTPEventcollectorOutput < BufferedOutput
     super
     log.trace "splunk-http-eventcollector(configure) called"
     begin
-      @splunk_uri = URI "#{@protocol}://#{@server}/services/collector"
+      @splunk_uri = Addressable::URI.parse "#{@protocol}://#{@server}/services/collector"
     rescue
       raise ConfigError, "Unable to parse the server into a URI."
     end
